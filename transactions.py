@@ -28,35 +28,46 @@
 
 #writing a function that that represents transaction amounts
 def solution(A, D):
+    # Dictionary to track total transactions for each month
     transactions = {}
+    # Variables to track total income and expenses
     total_income = 0
     total_expenses = 0
     
+    # Iterate through each transaction
     for amount, date in zip(A, D):
+        # Extract year, month, and day from the date
         year, month, _ = date.split('-')
+        # Create a key in the transactions dictionary based on year and month
         key = f"{year}-{month}"
         
+        # Update total amount for the corresponding month in transactions
         if key not in transactions:
             transactions[key] = 0
-        
         transactions[key] += amount
         
+        # Update total income and expenses based on the sign of the amount
         if amount >= 0:
             total_income += amount
         else:
             total_expenses += amount
     
+    # Calculate fees based on specific transaction amounts
     total_fee = 0
     for amount in transactions.values():
+        # Adjust fee calculation based on the specified rules
         if amount < -100:
             total_fee += 5
-        elif amount < -15:
-            total_fee += 5
+        elif amount < -50:
+            total_fee += 4
+        elif amount < -25:
+            total_fee += 3
         elif amount < -10:
-            total_fee += 5
-        elif amount < -5:
-            total_fee += 5
+            total_fee += 2
+        elif amount < 0:
+            total_fee += 1
     
+    # Calculate final balance by subtracting total fees from the sum of total income and total expenses
     final_balance = total_income + total_expenses - total_fee
     return final_balance
 
